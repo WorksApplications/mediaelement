@@ -1,6 +1,7 @@
 (function($) {
 	$.extend(mejs.MepDefaults, {
-		nofastforward: false
+		noFastForward: false,
+		noRewind: false
 	});
 	// progress/loaded bar
 	$.extend(MediaElementPlayer.prototype, {
@@ -36,7 +37,8 @@
 						width = total.outerWidth(true),
 						percentage = 0,
 						newTime = 0,
-						pos = 0;
+						pos = 0,
+						canSeek;
 
 
 					if (media.duration) {
@@ -50,8 +52,13 @@
 						percentage = (pos / width);
 						newTime = (percentage <= 0.02) ? 0 : percentage * media.duration;
 
+						canSeek = mouseIsDown && newTime !== media.currentTime;
+						//check no fast forward
+						canSeek = canSeek && !(player.options.noFastForward && newTime > player.maxVisitedTime);
+						//check no rewind
+						canSeek = canSeek && !(player.options.noRewind && newTime < media.currentTime);
 						// seek to where the mouse is
-						if (mouseIsDown && newTime !== media.currentTime && (!player.options.nofastforward || newTime < player.maxVisitedTime)) {
+						if (canSeek) {
 							media.setCurrentTime(newTime);
 						}
 
