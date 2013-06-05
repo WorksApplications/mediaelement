@@ -177,7 +177,6 @@
 					t.current.width(newWidth);
 					t.handle.css('left', handlePos);
 				}
-				t.setMaxVisitedTime(t.media.currentTime);
 			}
 
 		},
