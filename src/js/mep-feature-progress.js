@@ -119,6 +119,7 @@
 			media.addEventListener('timeupdate', function(e) {
 				player.setProgressRail(e);
 				player.setCurrentRail(e);
+				player.setMaxVisitedTime(e);
 			}, false);
 
 
@@ -180,8 +181,8 @@
 			}
 
 		},
-		setMaxVisitedTime: function(targetTime) {
-			var t = this;
+		setMaxVisitedTime: function() {
+			var t = this, targetTime = t.media.currentTime;
 			if (t.maxVisitedTime == undefined) {
 				t.maxVisitedTime = 0;
 			}
