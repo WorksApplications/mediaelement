@@ -27,7 +27,12 @@
 				});
 
 			media.addEventListener('play',function() {
-				play.removeClass('mejs-play').addClass('mejs-pause');
+				if (player.options.noPause) {
+						play.remove();
+						player.options.clickToPlayPause = false;
+				} else {
+						play.removeClass('mejs-play').addClass('mejs-pause');
+				}
 			}, false);
 			media.addEventListener('playing',function() {
 				play.removeClass('mejs-play').addClass('mejs-pause');
