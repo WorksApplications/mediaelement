@@ -95,6 +95,9 @@ if (typeof jQuery != 'undefined') {
 								179 // GOOGLE play/pause button
 							  ],
 						action: function(player, media) {
+								if (player.options.noPause) {
+										return;
+								}
 								if (media.paused || media.ended) {
 										media.play();	
 								} else {
@@ -122,6 +125,9 @@ if (typeof jQuery != 'undefined') {
 								227 // Google TV rewind
 						],
 						action: function(player, media) {
+								if (player.options.noRewind) {
+										return;
+								}
 								if (!isNaN(media.duration) && media.duration > 0) {
 										if (player.isVideo) {
 												player.showControls();
@@ -147,8 +153,10 @@ if (typeof jQuery != 'undefined') {
 										}
 										
 										// 5%
-										var newTime = Math.min(media.currentTime + player.options.defaultSeekForwardInterval(media), media.duration);										
-										media.setCurrentTime(newTime);
+										var newTime = Math.min(media.currentTime + player.options.defaultSeekForwardInterval(media), media.duration);
+										if (!(player.options.noFastForward && newTime > player.maxVisitedTime)) {
+												media.setCurrentTime(newTime);
+										}
 								}
 						}
 				},
@@ -1209,7 +1217,12 @@ if (typeof jQuery != 'undefined') {
 				});
 
 			media.addEventListener('play',function() {
-				play.removeClass('mejs-play').addClass('mejs-pause');
+				if (player.options.noPause) {
+						play.remove();
+						player.options.clickToPlayPause = false;
+				} else {
+						play.removeClass('mejs-play').addClass('mejs-pause');
+				}
 			}, false);
 			media.addEventListener('playing',function() {
 				play.removeClass('mejs-play').addClass('mejs-pause');

@@ -74,6 +74,9 @@ to the <a href="http://www.macromedia.com/support/documentation/en/flashplayer/h
 <script>
 
 $('audio,video').mediaelementplayer({
+	noPause: true,
+	noFastForward: false,
+	noRewind: false,
 	success: function(player, node) {
 		$('#' + node.id + '-mode').html('mode: ' + player.pluginType);
 	}

@@ -79,6 +79,9 @@
 								179 // GOOGLE play/pause button
 							  ],
 						action: function(player, media) {
+								if (player.options.noPause) {
+										return;
+								}
 								if (media.paused || media.ended) {
 										media.play();	
 								} else {
@@ -106,6 +109,9 @@
 								227 // Google TV rewind
 						],
 						action: function(player, media) {
+								if (player.options.noRewind) {
+										return;
+								}
 								if (!isNaN(media.duration) && media.duration > 0) {
 										if (player.isVideo) {
 												player.showControls();
@@ -131,8 +137,10 @@
 										}
 										
 										// 5%
-										var newTime = Math.min(media.currentTime + player.options.defaultSeekForwardInterval(media), media.duration);										
-										media.setCurrentTime(newTime);
+										var newTime = Math.min(media.currentTime + player.options.defaultSeekForwardInterval(media), media.duration);
+										if (!(player.options.noFastForward && newTime > player.maxVisitedTime)) {
+												media.setCurrentTime(newTime);
+										}
 								}
 						}
 				},
